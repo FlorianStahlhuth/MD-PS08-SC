@@ -1,6 +1,6 @@
 ---
 title: "Problem Set 08"
-author: "Your Name"
+author: "Florian Stahlhuth"
 date: last-modified
 date-format: "[Last modified on] MMMM DD, YYYY HH:mm:ss zzz"
 format: 
@@ -99,7 +99,7 @@ How many rows does `boot_samp_1000` have? **Why?**
 :::
 
 ::: {.callout-important icon="false" collapse="false" title="Problem 1 Answers"}
-* Delete this and put your text answer here.
+* `boot_samp_1000` has `r comma(nrow(boot_samp_1000))` rows. For each of the `r comma(1000)` resamples there are `r comma(100)`.
 :::
 
 ## Step 2: Calculate the Bootstrap Statistic
@@ -174,7 +174,7 @@ How many values of the bootstrap statistic `stat` are there in the object `boot_
 :::
 
 ::: {.callout-important icon="false" collapse="false" title="Problem 2 Answers"}
-* Delete this and put your text answer here.
+* There are `r comma(nrow(boot_distrib_tv))` values of the bootstrap statistic `stat` in the object `boot_distrib_tv`. One mean for each of the `r comma(1000)` resamples taken.
 :::
 
 ## Visualizing the Bootstrap Distribution
@@ -335,10 +335,15 @@ boot_dist_tv_infer |> visualize() +
 :::
 
 ::: {.callout-important icon="false" collapse="false" title="Problem 3 Answers"}
-* Delete this and put your text answer here.
+* If we calculated a 90% bootstrap percentile confidence interval for the mean of `tvhours` using the same bootstrap resample roughly 900 of the `r comma(1000)` values would fall between the `lower_ci` and the `upper_ci`. 
 
 ```{r}
-# Type your code and comments below
+PCI_90 <- boot_dist_tv_infer |>
+  get_confidence_interval(level = 0.90, type = "percentile")
+n_pci_90 <- boot_dist_tv_infer |>
+  filter(stat >= PCI_90$lower_ci, stat <= PCI_90$upper_ci) |>
+  summarize(n = n())
+n_pci_90
 
 ```
 :::
@@ -349,11 +354,12 @@ Use the bootstrap resampling distribution for `tvhours` generated using the infe
 
 ::: {.callout-important icon="false" collapse="false" title="Problem 4 Answers"}
 ```{r}
-# Type your code and comments inside the code chunk
+PCI_99 <- boot_dist_tv_infer |>
+  get_confidence_interval(level = 0.99, type = "percentile")
 
 ```
 
-* Delete this and put your text answer here.
+* A 99% bootstrap percentile confidence interval for the mean `tvhours` is $(`r round(PCI_99$lower_ci, 2)`, `r round(PCI_99$upper_ci, 2)`)$.
 :::
 
 ::: {.callout-note icon="false" title="Problem 5"}
@@ -361,7 +367,7 @@ Which confidence interval is **WIDER**: the 95% confidence interval or the 99% c
 :::
 
 ::: {.callout-important icon="false" collapse="false" title="Problem 5 Answers"}
-* Delete this and put your text answer here.
+* The 99% confidence interval for the population mean $\mu_{tv}$ is wider than the 95% confidence interval. This is due to the increased confidence level. If we want to be more confident to include the true population mean in the interval, we have to include more values.
 :::
 
 ::: {.callout-note icon="false" title="Problem 6"}
